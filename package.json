@@ -61,10 +61,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/overhead-aluminium-workshop.git"
+    "url": "https://github.com/Pateh-Bah/OAW.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/overhead-aluminium-workshop/issues"
+    "url": "https://github.com/Pateh-Bah/OAW/issues"
   },
-  "homepage": "https://github.com/yourusername/overhead-aluminium-workshop#readme"
+  "homepage": "https://github.com/Pateh-Bah/OAW#readme"
 }

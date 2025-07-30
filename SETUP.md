@@ -109,8 +109,8 @@ git add .
 # Create initial commit
 git commit -m "Initial commit: Overhead Aluminium Workshop Web System"
 
-# Add GitHub remote (replace with your actual repository URL)
-git remote add origin https://github.com/yourusername/overhead-aluminium-workshop.git
+# Add GitHub remote (your actual repository URL)
+git remote add origin https://github.com/Pateh-Bah/OAW.git
 
 # Push to GitHub
 git push -u origin main
