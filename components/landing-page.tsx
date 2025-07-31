@@ -368,7 +368,7 @@ export function LandingPage() {
                     <div>
                       <div className="font-medium">Phone</div>
                       <div className="text-muted-foreground">
-                        +232-77-902-889<br />+232-31-902-889
+                        +232-77-902-889<br />+232-74-902-889<br />+232-31-902-889
                       </div>
                     </div>
                   </div>
