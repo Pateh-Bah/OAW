@@ -80,6 +80,12 @@ ALTER TABLE sites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE project_media ENABLE ROW LEVEL SECURITY;
 ALTER TABLE company_settings ENABLE ROW LEVEL SECURITY;
 
+-- Temporary policies to allow initial data insertion (these will be updated later)
+CREATE POLICY "Allow initial setup" ON customers FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow initial setup" ON employees FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow initial setup" ON sites FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow initial setup" ON company_settings FOR ALL USING (true) WITH CHECK (true);
+
 -- Create RLS policies for profiles
 CREATE POLICY "Users can view their own profile" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update their own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
@@ -87,24 +93,32 @@ CREATE POLICY "Users can update their own profile" ON profiles FOR UPDATE USING 
 -- Create RLS policies for employees (Admin only)
 CREATE POLICY "Admin can manage employees" ON employees FOR ALL USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
+) WITH CHECK (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
 );
 
 -- Create RLS policies for customers (Admin only)
 CREATE POLICY "Admin can manage customers" ON customers FOR ALL USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
+) WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
 );
 
 -- Create RLS policies for sites (Admin only)
 CREATE POLICY "Admin can manage sites" ON sites FOR ALL USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
+) WITH CHECK (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
 );
 
 -- Create RLS policies for project_media
-CREATE POLICY "Staff can upload media" ON project_media FOR INSERT USING (
+CREATE POLICY "Staff can upload media" ON project_media FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('Admin', 'Staff'))
 );
 
 CREATE POLICY "Admin can manage media" ON project_media FOR ALL USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
+) WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
 );
 
@@ -115,6 +129,8 @@ CREATE POLICY "Public can view completed project media" ON project_media FOR SEL
 
 -- Create RLS policies for company_settings (Admin only)
 CREATE POLICY "Admin can manage company settings" ON company_settings FOR ALL USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
+) WITH CHECK (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'Admin')
 );
 
@@ -138,8 +154,37 @@ CREATE TRIGGER on_auth_user_created
 INSERT INTO company_settings (company_name, contact_info) 
 VALUES (
   'Overhead Aluminium Workshop',
-  '{"email": "overheadaluminium@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-31-902-889", "address": "8 Hill Cot Road, Freetown", "website": "https://www.overheadaluminium.com"}'
+  '{"email": "overheadaluminium@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-74-74-902-889", "phone3": "+232-31-74-902-889", "address": "5c Hill Cot Road, Freetown, Sierra Leone", "website": "https://www.overheadaluminium.com"}'
 ) ON CONFLICT DO NOTHING;
+
+-- Insert sample customers for the showcase projects
+INSERT INTO customers (id, full_name, phone_number, email) VALUES
+  (uuid_generate_v4(), 'East End Residential Complex', '+232-76-123-456', 'eastend@example.com'),
+  (uuid_generate_v4(), 'Siaka Stevens Office Building', '+232-76-234-567', 'office@siakabuilding.com'),
+  (uuid_generate_v4(), 'Hill Station Villa Owner', '+232-76-345-678', 'villa@hillstation.com'),
+  (uuid_generate_v4(), 'Kissy Shopping Center', '+232-76-456-789', 'info@kissyshopping.com'),
+  (uuid_generate_v4(), 'Circular Road School', '+232-76-567-890', 'admin@circularschool.edu'),
+  (uuid_generate_v4(), 'Aberdeen Hotel Chain', '+232-76-678-901', 'management@aberdeenhotel.com')
+ON CONFLICT DO NOTHING;
+
+-- Insert sample sites/projects for the showcase
+INSERT INTO sites (id, customer_id, address, budget, cost_breakdown, company_earnings, status) VALUES
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'East End Residential Complex'), '15 Wilkinson Road, Freetown', 45000.00, '{"materials": 25000, "labor": 15000, "equipment": 5000}', 12000.00, 'Completed'),
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'Siaka Stevens Office Building'), '23 Siaka Stevens Street, Freetown', 75000.00, '{"materials": 45000, "labor": 20000, "equipment": 10000}', 18000.00, 'Completed'),
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'Hill Station Villa Owner'), '8 Hill Station Road, Freetown', 35000.00, '{"materials": 20000, "labor": 10000, "equipment": 5000}', 8500.00, 'Completed'),
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'Kissy Shopping Center'), '45 Kissy Street, Freetown', 95000.00, '{"materials": 60000, "labor": 25000, "equipment": 10000}', 22000.00, 'Completed'),
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'Circular Road School'), '12 Circular Road, Freetown', 28000.00, '{"materials": 16000, "labor": 8000, "equipment": 4000}', 7000.00, 'Completed'),
+  (uuid_generate_v4(), (SELECT id FROM customers WHERE full_name = 'Aberdeen Hotel Chain'), '7 Aberdeen Road, Freetown', 65000.00, '{"materials": 40000, "labor": 18000, "equipment": 7000}', 15500.00, 'Completed')
+ON CONFLICT DO NOTHING;
+
+-- Insert sample employees
+INSERT INTO employees (id, full_name, designation, department, badge_number, contact_info) VALUES
+  (uuid_generate_v4(), 'Mohamed Kamara', 'Senior Technician', 'Production', 'OAW001', '{"phone": "+232-77-111-222", "emergency_contact": "+232-76-111-222"}'),
+  (uuid_generate_v4(), 'Fatima Sesay', 'Project Manager', 'Management', 'OAW002', '{"phone": "+232-77-222-333", "emergency_contact": "+232-76-222-333"}'),
+  (uuid_generate_v4(), 'Ibrahim Conteh', 'Aluminum Specialist', 'Production', 'OAW003', '{"phone": "+232-77-333-444", "emergency_contact": "+232-76-333-444"}'),
+  (uuid_generate_v4(), 'Aminata Bangura', 'Quality Controller', 'Quality Assurance', 'OAW004', '{"phone": "+232-77-444-555", "emergency_contact": "+232-76-444-555"}'),
+  (uuid_generate_v4(), 'Sallieu Mansaray', 'Installation Supervisor', 'Installation', 'OAW005', '{"phone": "+232-77-555-666", "emergency_contact": "+232-76-555-666"}')
+ON CONFLICT DO NOTHING;
 
 -- Create updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -165,3 +210,10 @@ CREATE TRIGGER update_sites_updated_at BEFORE UPDATE ON sites
 
 CREATE TRIGGER update_company_settings_updated_at BEFORE UPDATE ON company_settings
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
+
+-- Now replace temporary policies with proper RLS policies
+-- Drop temporary policies
+DROP POLICY IF EXISTS "Allow initial setup" ON customers;
+DROP POLICY IF EXISTS "Allow initial setup" ON employees;
+DROP POLICY IF EXISTS "Allow initial setup" ON sites;
+DROP POLICY IF EXISTS "Allow initial setup" ON company_settings;
