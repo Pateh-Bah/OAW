@@ -28,26 +28,26 @@ export function LandingPage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
         <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02]" />
-        <div className="container relative mx-auto px-4 py-24 lg:py-32">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge variant="secondary" className="mb-6 text-sm">
+        <div className="container relative mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto max-w-4xl text-center">
+            <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm px-3 py-1">
               🚀 Professional Workshop Management
             </Badge>
-            <h1 className="mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-5xl font-bold tracking-tight text-transparent dark:from-white dark:to-gray-300 lg:text-7xl">
+            <h1 className="mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-transparent dark:from-white dark:to-gray-300">
               Overhead Aluminium
               <span className="block text-blue-600 dark:text-blue-400">Workshop</span>
             </h1>
-            <p className="mb-8 text-xl text-gray-600 dark:text-gray-300 lg:text-2xl">
+            <p className="mb-6 sm:mb-8 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Transform your aluminium workshop with our comprehensive management platform. 
               Streamline operations, manage projects, and grow your business.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" className="h-12 px-8 text-base">
+            <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center">
+              <Button asChild size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
                 <Link href="/auth/login">
                   Get Started <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8 text-base">
+              <Button variant="outline" size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
                 Watch Demo
               </Button>
             </div>
@@ -56,41 +56,41 @@ export function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 lg:py-32">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+      <section className="py-16 sm:py-20 lg:py-24 xl:py-32">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16">
+            <h2 className="mb-3 sm:mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
               Everything you need to manage your workshop
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Powerful features designed specifically for aluminium workshops and fabrication businesses
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg transition-all hover:shadow-xl dark:from-blue-950/50 dark:to-indigo-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white">
-                  <Users className="h-6 w-6" />
+              <CardHeader className="pb-4">
+                <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-blue-600 text-white mb-3 sm:mb-4">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
-                <CardTitle className="text-xl">Staff Management</CardTitle>
-                <CardDescription className="text-base">
+                <CardTitle className="text-lg sm:text-xl">Staff Management</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Complete team management with role-based access control and activity tracking
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Employee profiles and roles
+                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                    <span>Employee profiles and roles</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Activity logging and reporting
+                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                    <span>Activity logging and reporting</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Permission management
+                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                    <span>Permission management</span>
                   </li>
                 </ul>
               </CardContent>

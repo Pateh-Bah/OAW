@@ -1,22 +1,48 @@
-# Overhead Aluminium Workshop - Database Setup Guide
+# Overhead Aluminium Workshop - Database Setup
 
-## Prerequisites
-- Supabase account and project created
-- Access to Supabase SQL Editor
-- Project environment variables configured
+## Quick Setup (Single File)
 
-## Setup Steps
+1. **Copy the complete SQL script:**
+   - Open `scripts/complete-database-structure.sql`
+   - Copy all the content
 
-### 1. Execute Database Schema
-1. Open your Supabase dashboard
-2. Go to SQL Editor
-3. Copy and paste the content from `supabase/schema.sql`
-4. Execute the script
+2. **Run in Supabase:**
+   - Go to your Supabase dashboard
+   - Navigate to SQL Editor
+   - Paste the complete script
+   - Click "Run"
 
-### 2. Execute Setup Commands
-1. In the same SQL Editor
-2. Copy and paste the content from `supabase/setup.sql`
-3. Execute the script
+3. **Done!**
+   - Your dashboard will now load properly
+   - Receipt-style project management is ready
+   - Sample data included for testing
+
+## What This Creates
+
+### Tables:
+- ✅ `company_settings` - Company information
+- ✅ `services` - Available services  
+- ✅ `projects` - Main project table (receipt-style)
+- ✅ `sites` - Project locations
+- ✅ `budgets` - Project budgets
+- ✅ `budget_items` - Receipt line items
+- ✅ `project_services` - Service assignments
+
+### Features:
+- ✅ Auto project numbering (PRJ-2025-0001)
+- ✅ Real-time cost calculations
+- ✅ Receipt-style cost structure
+- ✅ Professional invoice generation
+- ✅ Sample data for testing
+
+### Cost Structure:
+- **Items Cost**: Auto-calculated from budget_items
+- **Labor Cost**: Manual entry by admin
+- **Manual Cost**: Additional costs
+- **Total**: Auto-calculated (items + labor + manual)
+
+## Files Cleaned Up
+Everything is now in one complete file: `complete-database-structure.sql`
 
 ### 3. Create Admin User
 1. Go to Authentication > Users in your Supabase dashboard

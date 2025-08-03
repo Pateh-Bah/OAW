@@ -1,0 +1,14 @@
+{
+  "name": "Overhead Aluminium Workshop",
+  "short_name": "OAW",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#3B82F6",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

@@ -40,12 +40,7 @@ async function executeSQLDirectly() {
   console.log('⚠️  Since we cannot execute raw SQL via API, creating tables with sample data...')
   
   return false // Force manual table creation approach
-}fetch = require('node-fetch')
-const fs = require('fs')
-const path = require('path')
-
-const supabaseUrl = 'https://rrcudlpndmgaumcgdyco.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyY3VkbHBuZG1nYXVtY2dkeWNvIiwicm9sZUiOiJhbm9uIiwiaWF0IjoxNzUzODk2MzkyLCJleHAiOjIwNjk0NzIzOTJ9.J1LLj-LoOc4-3E6q9eZS6bBezO3N0dy6ZSzdIJYFa8E'
+}
 
 async function createDatabaseStructure() {
   console.log('🚀 Creating database structure programmatically...')
@@ -104,7 +99,7 @@ async function createDatabaseStructure() {
   try {
     // Sample profile data
     const profileData = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       email: 'admin@overheadaluminium.com',
       full_name: 'System Administrator',
       role: 'admin',
@@ -142,7 +137,7 @@ async function insertSampleData() {
   
   const sampleProjects = [
     {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       title: 'Residential Window Installation',
       description: 'Complete aluminium window replacement for family home',
       location: '12 Hill Cot Road, Freetown', 
@@ -152,7 +147,7 @@ async function insertSampleData() {
       budget: 2500000
     },
     {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       title: 'Office Building Curtain Wall',
       description: 'Modern curtain wall system for commercial building',
       location: '45 Siaka Stevens Street, Freetown',

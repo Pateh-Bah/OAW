@@ -3,66 +3,159 @@
 @tailwind utilities;
 
 @layer base {
+  /* Fix for text-size-adjust compatibility */
+  html,
+  :host {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Prevent horizontal scrolling on mobile */
+    overflow-x: hidden;
+  }
+
+  /* Mobile-first responsive base */
+  body {
+    @apply bg-background text-foreground;
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+    /* Better font rendering on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Enhanced mobile viewport handling */
+  @supports (height: 100dvh) {
+    .min-h-screen {
+      min-height: 100dvh;
+    }
+  }
+
+  /* Better touch targets for mobile */
+  button, 
+  a, 
+  input, 
+  select, 
+  textarea {
+    /* Minimum 44px touch target as per accessibility guidelines */
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent zoom on input focus (mobile) */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    input, 
+    select, 
+    textarea {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+
   :root {
+    /* Enhanced Light Mode Colors with Superior Contrast */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 3.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 3.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 3.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
+
+    /* Enhanced OAW Brand Colors with Superior Visibility */
+    --oaw-blue: 214 84% 28%;           /* Deep blue: #1e3a8a - Better visibility */
+    --oaw-blue-hover: 214 88% 24%;     /* Darker hover state: #1e40af */
+    --oaw-blue-light: 214 100% 96%;    /* Very light blue background */
+    --oaw-blue-dark: 214 88% 15%;      /* Very dark blue */
+    
+    /* Enhanced Gray Scale */
+    --oaw-gray: 220 14% 91%;           /* Light gray with better contrast */
+    --oaw-gray-dark: 220 26% 18%;      /* Dark gray for text */
+    
+    /* Superior Text Colors */
+    --oaw-text: 220 26% 14%;           /* Deep charcoal: #1f2937 */
+    --oaw-text-light: 220 13% 46%;     /* Medium gray: #6b7280 */
+    --oaw-text-muted: 220 9% 62%;      /* Light gray: #9ca3af */
+    
+    /* Status Colors with Better Contrast */
+    --oaw-success: 142 76% 36%;        /* Forest green: #059669 */
+    --oaw-warning: 45 93% 47%;         /* Amber: #f59e0b */
+    --oaw-error: 0 84% 48%;            /* Red: #dc2626 */            --chart-1: 12 76% 61%;            --chart-2: 173 58% 39%;            --chart-3: 197 37% 24%;            --chart-4: 43 74% 66%;            --chart-5: 27 87% 67%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Enhanced Dark Mode Colors with Superior Contrast */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+
+    /* Enhanced OAW Dark Brand Colors */
+    --oaw-blue: 214 88% 55%;
+    --oaw-blue-hover: 214 88% 65%;
+    --oaw-blue-light: 220 13% 15%;
+    --oaw-blue-dark: 214 88% 75%;
+    --oaw-gray: 220 13% 20%;
+    --oaw-gray-dark: 220 13% 15%;
+    --oaw-text: 0 0% 98%;
+    --oaw-text-light: 220 5% 75%;
+    --oaw-text-muted: 220 5% 65%;
+    --oaw-success: 142 71% 45%;
+    --oaw-warning: 38 100% 55%;
+    --oaw-error: 0 84% 60%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -146,4 +239,816 @@
 /* Enhanced gradients */
 .gradient-primary {
   background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+}
+
+/* Enhanced OAW Brand Colors with Superior Visibility */
+
+/* Text Colors with High Contrast */
+.text-oaw-blue { 
+  color: hsl(var(--oaw-blue)); 
+  font-weight: 500;
+}
+
+/* =================================================================== */
+/* MOBILE-FIRST RESPONSIVE DESIGN FOR GALAXY S24 ULTRA & ALL DEVICES */
+/* =================================================================== */
+
+/* Mobile-first container with proper padding */
+.mobile-container {
+  @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+  max-width: 100%;
+}
+
+/* Enhanced responsive grid system */
+.responsive-grid {
+  @apply grid gap-4;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    @apply gap-6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile-optimized cards */
+.mobile-card {
+  @apply w-full rounded-lg border bg-card text-card-foreground shadow-sm;
+  @apply p-4 sm:p-6;
+  transition: all 0.2s ease-in-out;
+}
+
+.mobile-card:hover {
+  @apply shadow-md;
+  transform: translateY(-1px);
+}
+
+/* Touch-friendly buttons */
+.btn-mobile {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium;
+  @apply ring-offset-background transition-colors focus-visible:outline-none;
+  @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply min-h-[44px] px-4 py-2; /* Minimum touch target */
+  @apply gap-2; /* Space for icons */
+}
+
+/* Galaxy S24 Ultra specific optimizations (1440x3120, 516 PPI) */
+@media (min-device-width: 360px) and (max-device-width: 430px) and (-webkit-device-pixel-ratio: 3) {
+  /* Ultra-high DPI optimizations */
+  .text-xs { font-size: 0.8125rem; } /* 13px */
+  .text-sm { font-size: 0.9375rem; } /* 15px */
+  .text-base { font-size: 1.0625rem; } /* 17px */
+  .text-lg { font-size: 1.1875rem; } /* 19px */
+  .text-xl { font-size: 1.3125rem; } /* 21px */
+  
+  /* Better touch targets for high DPI */
+  .btn-mobile {
+    @apply min-h-[48px] px-6 py-3;
+  }
+  
+  /* Enhanced spacing for readability */
+  .mobile-card {
+    @apply p-5 mb-4;
+  }
+}
+
+/* Mobile navigation styles */
+.mobile-nav {
+  @apply fixed bottom-0 left-0 right-0 z-50;
+  @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+  @apply border-t border-border;
+}
+
+.mobile-nav-item {
+  @apply flex flex-col items-center justify-center;
+  @apply py-2 px-1 text-xs font-medium;
+  @apply min-h-[60px] min-w-[60px];
+  @apply transition-colors duration-200;
+}
+
+.mobile-nav-item.active {
+  @apply text-primary;
+}
+
+/* Mobile header with safe area */
+.mobile-header {
+  @apply sticky top-0 z-40 w-full;
+  @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+  @apply border-b border-border;
+  /* Safe area for notched phones */
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Mobile-optimized forms */
+.mobile-form {
+  @apply space-y-4 w-full;
+}
+
+.mobile-form input,
+.mobile-form select,
+.mobile-form textarea {
+  @apply w-full rounded-md border border-input;
+  @apply bg-background px-3 py-2;
+  @apply text-base; /* Prevents zoom on iOS */
+  @apply min-h-[44px]; /* Touch target */
+}
+
+.mobile-form label {
+  @apply text-sm font-medium text-foreground;
+  @apply mb-2 block;
+}
+
+/* Mobile-friendly modals/dialogs */
+.mobile-dialog {
+  @apply fixed inset-0 z-50 flex items-end sm:items-center justify-center;
+}
+
+.mobile-dialog-content {
+  @apply relative w-full sm:max-w-lg;
+  @apply bg-background border border-border rounded-t-xl sm:rounded-xl;
+  @apply shadow-lg;
+  /* Bottom sheet on mobile, centered on desktop */
+  @apply max-h-[90vh] overflow-y-auto;
+}
+
+@media (max-width: 640px) {
+  .mobile-dialog-content {
+    @apply m-0 rounded-t-xl rounded-b-none;
+    /* Full width on mobile */
+    @apply w-full;
+    /* Safe area for home indicator */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Responsive text scaling */
+.responsive-text {
+  @apply text-sm sm:text-base lg:text-lg;
+}
+
+.responsive-heading {
+  @apply text-xl sm:text-2xl lg:text-3xl font-bold;
+}
+
+.responsive-subheading {
+  @apply text-lg sm:text-xl lg:text-2xl font-semibold;
+}
+
+/* Mobile-optimized spacing */
+.mobile-spacing {
+  @apply space-y-4 sm:space-y-6 lg:space-y-8;
+}
+
+.mobile-padding {
+  @apply p-4 sm:p-6 lg:p-8;
+}
+
+.mobile-margin {
+  @apply m-4 sm:m-6 lg:m-8;
+}
+
+/* Horizontal scroll containers for mobile */
+.mobile-scroll {
+  @apply flex overflow-x-auto pb-4;
+  @apply snap-x snap-mandatory;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.mobile-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.mobile-scroll > * {
+  @apply flex-shrink-0 snap-center;
+}
+
+/* Loading states optimized for mobile */
+.mobile-loading {
+  @apply flex items-center justify-center;
+  @apply min-h-[200px] w-full;
+}
+
+.mobile-skeleton {
+  @apply animate-pulse bg-muted rounded;
+}
+
+/* Error states for mobile */
+.mobile-error {
+  @apply text-center p-6 space-y-4;
+  @apply text-destructive;
+}
+
+/* Success states for mobile */
+.mobile-success {
+  @apply text-center p-6 space-y-4;
+  @apply text-green-600;
+}
+
+/* Mobile-optimized tables (convert to cards on small screens) */
+@media (max-width: 768px) {
+  .mobile-table {
+    @apply block;
+  }
+  
+  .mobile-table thead {
+    @apply hidden;
+  }
+  
+  .mobile-table tbody,
+  .mobile-table tr,
+  .mobile-table td {
+    @apply block;
+  }
+  
+  .mobile-table tr {
+    @apply border border-border rounded-lg mb-4 p-4;
+    @apply bg-card;
+  }
+  
+  .mobile-table td {
+    @apply py-2 px-0;
+    @apply border-0;
+  }
+  
+  .mobile-table td:before {
+    content: attr(data-label) ": ";
+    @apply font-semibold;
+  }
+}
+
+/* Accessibility improvements for mobile */
+.mobile-focus {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary;
+  @apply focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .mobile-card {
+    @apply border-2;
+  }
+  
+  .btn-mobile {
+    @apply border-2 border-current;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-card,
+  .btn-mobile,
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Dark mode optimizations for mobile */
+@media (prefers-color-scheme: dark) {
+  .mobile-nav {
+    @apply bg-background/90;
+  }
+  
+  .mobile-header {
+    @apply bg-background/90;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .mobile-header {
+    @apply py-2; /* Reduce height in landscape */
+  }
+  
+  .mobile-card {
+    @apply p-3; /* Reduce padding in landscape */
+  }
+}
+
+/* Print styles (hide mobile-specific elements) */
+@media print {
+  .mobile-nav,
+  .mobile-header {
+    display: none !important;
+  }
+}
+.text-oaw-blue-hover { 
+  color: hsl(var(--oaw-blue-hover)); 
+  font-weight: 500;
+}
+.text-oaw-text { 
+  color: hsl(var(--oaw-text)); 
+  font-weight: 500;
+  line-height: 1.5;
+}
+.text-oaw-text-light { 
+  color: hsl(var(--oaw-text-light)); 
+  font-weight: 400;
+  line-height: 1.6;
+}
+.text-oaw-text-muted { 
+  color: hsl(var(--oaw-text-muted)); 
+  font-weight: 400;
+}
+
+/* Background Colors with Proper Contrast */
+.bg-oaw-blue { 
+  background-color: hsl(var(--oaw-blue)); 
+  color: white;
+  font-weight: 500;
+}
+.bg-oaw-blue-hover:hover { 
+  background-color: hsl(var(--oaw-blue-hover)); 
+  transition: background-color 0.2s ease;
+}
+.bg-oaw-blue-light { 
+  background-color: hsl(var(--oaw-blue-light)); 
+  color: hsl(var(--oaw-text));
+}
+
+/* Enhanced Button Classes */
+.btn-primary {
+  background-color: hsl(var(--oaw-blue));
+  color: white;
+  border: 1px solid hsl(var(--oaw-blue));
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: hsl(var(--oaw-blue-hover));
+  border-color: hsl(var(--oaw-blue-hover));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: hsl(var(--oaw-text));
+  border: 2px solid hsl(var(--oaw-blue));
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: hsl(var(--oaw-blue));
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+}
+
+/* Enhanced Card Classes */
+.card-enhanced {
+  background: white;
+  border: 1px solid hsl(220 14% 91%);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.card-enhanced:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 3px 10px rgba(0, 0, 0, 0.04);
+  border-color: hsl(var(--oaw-blue) / 0.2);
+}
+
+.dark .card-enhanced {
+  background: hsl(220 13% 12%);
+  border-color: hsl(220 13% 20%);
+  color: hsl(0 0% 98%);
+}
+
+/* Enhanced Badge Classes */
+.badge-enhanced {
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.badge-blue {
+  background-color: hsl(var(--oaw-blue) / 0.1);
+  color: hsl(var(--oaw-blue));
+  border-color: hsl(var(--oaw-blue) / 0.2);
+}
+
+.badge-success {
+  background-color: hsl(var(--oaw-success) / 0.1);
+  color: hsl(var(--oaw-success));
+  border-color: hsl(var(--oaw-success) / 0.2);
+}
+
+/* Navigation Link Styles */
+.nav-link {
+  color: hsl(var(--oaw-text-light));
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: hsl(var(--oaw-blue));
+  background-color: hsl(var(--oaw-blue) / 0.05);
+}
+.text-oaw-text-light { 
+  color: hsl(var(--oaw-text-light)); 
+  font-weight: 400;
+}
+.text-oaw-text-muted { 
+  color: hsl(var(--oaw-text-muted)); 
+  font-weight: 400;
+}
+.bg-oaw-blue-light { 
+  background-color: hsl(var(--oaw-blue-light)); 
+  color: hsl(var(--oaw-text));
+}
+.bg-oaw-gray { 
+  background-color: hsl(var(--oaw-gray)); 
+  color: hsl(var(--oaw-text));
+}
+
+/* Enhanced text contrast classes */
+.text-high-contrast { 
+  color: hsl(var(--oaw-text)); 
+  font-weight: 600;
+  line-height: 1.4;
+}
+.text-medium-contrast { 
+  color: hsl(var(--oaw-text-light)); 
+  font-weight: 500;
+  line-height: 1.5;
+}
+.text-low-contrast { 
+  color: hsl(var(--oaw-text-muted)); 
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Status Colors with Enhanced Visibility */
+.text-oaw-success { 
+  color: hsl(var(--oaw-success)); 
+  font-weight: 600;
+}
+.bg-oaw-success { 
+  background-color: hsl(var(--oaw-success)); 
+  color: white;
+}
+.text-oaw-warning { 
+  color: hsl(var(--oaw-warning)); 
+  font-weight: 600;
+}
+.bg-oaw-warning { 
+  background-color: hsl(var(--oaw-warning)); 
+  color: white;
+}
+.text-oaw-error { 
+  color: hsl(var(--oaw-error)); 
+  font-weight: 600;
+}
+.bg-oaw-error { 
+  background-color: hsl(var(--oaw-error)); 
+  color: white;
+}
+
+/* Form Input Enhancements */
+.input-enhanced {
+  border: 2px solid hsl(220 14% 91%);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  color: hsl(var(--oaw-text));
+}
+
+.input-enhanced:focus {
+  border-color: hsl(var(--oaw-blue));
+  box-shadow: 0 0 0 3px hsl(var(--oaw-blue) / 0.1);
+  outline: none;
+}
+
+.dark .input-enhanced {
+  background-color: hsl(220 13% 12%);
+  border-color: hsl(220 13% 20%);
+  color: hsl(0 0% 98%);
+}
+
+/* Enhanced Hover Effects */
+.hover-lift {
+  transition: all 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus Styles for Accessibility */
+.focus-enhanced:focus {
+  outline: 2px solid hsl(var(--oaw-blue));
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Gradient Backgrounds */
+.gradient-oaw-primary {
+  background: linear-gradient(135deg, hsl(var(--oaw-blue)) 0%, hsl(var(--oaw-blue-hover)) 100%);
+  color: white;
+}
+
+.gradient-oaw-soft {
+  background: linear-gradient(135deg, hsl(var(--oaw-blue-light)) 0%, white 100%);
+  color: hsl(var(--oaw-text));
+}
+
+/* Status colors with better contrast */
+.text-success { color: hsl(var(--oaw-success)); }
+.text-warning { color: hsl(var(--oaw-warning)); }
+.text-error { color: hsl(var(--oaw-error)); }
+.bg-success { 
+  background-color: hsl(var(--oaw-success)); 
+  color: white;
+}
+.bg-warning { 
+  background-color: hsl(var(--oaw-warning)); 
+  color: white;
+}
+.bg-error { 
+  background-color: hsl(var(--oaw-error)); 
+  color: white;
+}
+
+/* Enhanced button styles with better visibility */
+.btn-primary {
+  background: hsl(var(--oaw-blue));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--oaw-blue));
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: hsl(var(--oaw-blue-hover));
+  border-color: hsl(var(--oaw-blue-hover));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--oaw-blue) / 0.4);
+}
+
+.btn-secondary {
+  background: hsl(var(--secondary));
+  color: hsl(var(--oaw-text));
+  border: 1px solid hsl(var(--border));
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: hsl(var(--oaw-gray));
+  border-color: hsl(var(--oaw-blue));
+  color: hsl(var(--oaw-blue));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px hsl(var(--oaw-blue) / 0.2);
+}
+
+/* Enhanced card styles with better contrast */
+.card-enhanced {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.08), 0 1px 4px -1px rgb(0 0 0 / 0.04);
+  transition: all 0.3s ease;
+  color: hsl(var(--card-foreground));
+}
+
+.card-enhanced:hover {
+  box-shadow: 0 8px 25px 0 rgb(0 0 0 / 0.12), 0 4px 12px -2px rgb(0 0 0 / 0.08);
+  transform: translateY(-2px);
+  border-color: hsl(var(--oaw-blue) / 0.3);
+}
+
+/* Enhanced navigation styles */
+.nav-link {
+  color: hsl(var(--oaw-text-light));
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: hsl(var(--oaw-text));
+  background-color: hsl(var(--oaw-blue-light));
+}
+
+.nav-link-active {
+  color: hsl(var(--oaw-blue));
+  background-color: hsl(var(--oaw-blue-light));
+  border-color: hsl(var(--oaw-blue) / 0.3);
+  font-weight: 600;
+}
+
+/* Enhanced form input styles */
+.input-enhanced {
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  transition: all 0.2s ease;
+}
+
+.input-enhanced:focus {
+  border-color: hsl(var(--oaw-blue));
+  box-shadow: 0 0 0 3px hsl(var(--oaw-blue) / 0.1);
+}
+
+/* Badge enhancements */
+.badge-enhanced {
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.badge-blue {
+  background-color: hsl(var(--oaw-blue-light));
+  color: hsl(var(--oaw-blue));
+  border: 1px solid hsl(var(--oaw-blue) / 0.3);
+}
+
+.badge-success {
+  background-color: hsl(var(--oaw-success) / 0.1);
+  color: hsl(var(--oaw-success));
+  border: 1px solid hsl(var(--oaw-success) / 0.3);
+}
+
+.badge-warning {
+  background-color: hsl(var(--oaw-warning) / 0.1);
+  color: hsl(var(--oaw-warning));
+  border: 1px solid hsl(var(--oaw-warning) / 0.3);
+}
+
+.badge-error {
+  background-color: hsl(var(--oaw-error) / 0.1);
+  color: hsl(var(--oaw-error));
+  border: 1px solid hsl(var(--oaw-error) / 0.3);
+}
+
+/* Modal positioning fixes - Enhanced with Flexbox Centering */
+[data-radix-dialog-content] {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  inset: auto !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}
+
+/* Flexbox container for perfect centering */
+[data-radix-portal] > div:first-child + div {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 50 !important;
+  pointer-events: none !important;
+}
+
+/* Ensure dialog content is interactive */
+[data-radix-portal] > div:first-child + div [data-radix-dialog-content] {
+  pointer-events: auto !important;
+}
+
+/* Prevent modal movement on any interaction */
+[data-radix-dialog-overlay] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Force center positioning on all dialog states */
+[data-radix-dialog-content][data-state="open"],
+[data-radix-dialog-content][data-state="closed"],
+[data-radix-dialog-content]:hover,
+[data-radix-dialog-content]:focus,
+[data-radix-dialog-content]:focus-within {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  inset: auto !important;
+}
+
+/* Ensure dialog trigger doesn't affect modal positioning */
+[data-radix-dialog-trigger]:hover + [data-radix-portal] [data-radix-dialog-content],
+[data-radix-dialog-trigger]:focus + [data-radix-portal] [data-radix-dialog-content],
+[data-radix-dialog-trigger]:active + [data-radix-portal] [data-radix-dialog-content] {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  inset: auto !important;
+}
+
+/* Override any conflicting styles from other components - Updated */
+.dialog-content-override {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  inset: auto !important;
+  z-index: auto !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}
+
+/* CSS Compatibility Fixes */
+.sidebar-entry-btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Global user-select fix for buttons and interactive elements */
+button, 
+.btn, 
+[role="button"], 
+.clickable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Ensure proper text sizing across browsers */
+* {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Fix for hidden file inputs accessibility */
+input[type="file"] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Label for file inputs */
+.file-input-label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
