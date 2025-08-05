@@ -38,6 +38,18 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddingCustomer, setIsAddingCustomer] = useState(false)
+  const [isEditingCustomer, setIsEditingCustomer] = useState(false)
+  const [editingCustomerId, setEditingCustomerId] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    phone: "",
+    company_name: "",
+    address: "",
+    notes: ""
+  })
 
   // Use the stable modal hook to prevent positioning issues
   useStableModal()
@@ -62,6 +74,134 @@ export default function CustomersPage() {
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      // Validate form data
+      if (!formData.full_name.trim()) {
+        throw new Error('Please enter a customer name')
+      }
+
+      if (editingCustomerId) {
+        // Update existing customer
+        const { data, error } = await supabase
+          .from('customers')
+          .update({
+            full_name: formData.full_name.trim(),
+            email: formData.email.trim() || null,
+            phone: formData.phone.trim() || null,
+            company_name: formData.company_name.trim() || null,
+            address: formData.address.trim() || null,
+            notes: formData.notes.trim() || null
+          })
+          .eq('id', editingCustomerId)
+          .select()
+
+        if (error) throw error
+        console.log('✅ Customer updated successfully:', data)
+      } else {
+        // Create new customer
+        const { data, error } = await supabase
+          .from('customers')
+          .insert([
+            {
+              full_name: formData.full_name.trim(),
+              email: formData.email.trim() || null,
+              phone: formData.phone.trim() || null,
+              company_name: formData.company_name.trim() || null,
+              address: formData.address.trim() || null,
+              notes: formData.notes.trim() || null
+            }
+          ])
+          .select()
+
+        if (error) throw error
+        console.log('✅ Customer added successfully:', data)
+      }
+
+      // Reset form and close dialog
+      setFormData({
+        full_name: "",
+        email: "",
+        phone: "",
+        company_name: "",
+        address: "",
+        notes: ""
+      })
+      setIsAddingCustomer(false)
+      setIsEditingCustomer(false)
+      setEditingCustomerId(null)
+      
+      // Refresh the customer list
+      await fetchCustomers()
+    } catch (error: any) {
+      console.error('❌ Error saving customer:', error)
+      setSubmitError(error.message || 'Failed to save customer')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleEditCustomer = (customer: Customer) => {
+    setFormData({
+      full_name: customer.full_name,
+      email: customer.email || "",
+      phone: customer.phone || "",
+      company_name: customer.company_name || "",
+      address: customer.address || "",
+      notes: customer.notes || ""
+    })
+    setEditingCustomerId(customer.id)
+    setIsEditingCustomer(true)
+  }
+
+  const handleCancelEdit = () => {
+    setFormData({
+      full_name: "",
+      email: "",
+      phone: "",
+      company_name: "",
+      address: "",
+      notes: ""
+    })
+    setEditingCustomerId(null)
+    setIsEditingCustomer(false)
+    setIsAddingCustomer(false)
+    setSubmitError(null)
+  }
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleDeleteCustomer = async (customerId: string) => {
+    if (!confirm('Are you sure you want to delete this customer?')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('customers')
+        .delete()
+        .eq('id', customerId)
+
+      if (error) throw error
+
+      // Refresh the customer list
+      await fetchCustomers()
+      console.log('✅ Customer deleted successfully')
+    } catch (error) {
+      console.error('❌ Error deleting customer:', error)
+      alert('Failed to delete customer')
+    }
+  }
+
   const filteredCustomers = customers.filter(customer =>
     (customer.full_name && customer.full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (customer.email && customer.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -79,7 +219,11 @@ export default function CustomersPage() {
           </p>
         </div>
         
-        <Dialog open={isAddingCustomer} onOpenChange={setIsAddingCustomer}>
+        <Dialog open={isAddingCustomer || isEditingCustomer} onOpenChange={(open) => {
+          if (!open) {
+            handleCancelEdit()
+          }
+        }}>
           <DialogTrigger asChild>
             <Button className="gap-2 btn-primary bg-oaw-blue hover:bg-oaw-blue-hover shadow-md">
               <Plus className="h-4 w-4" />
@@ -88,34 +232,83 @@ export default function CustomersPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto card-enhanced dialog-content-override">
             <DialogHeader>
-              <DialogTitle className="text-oaw-text">Add New Customer</DialogTitle>
+              <DialogTitle className="text-oaw-text">
+                {editingCustomerId ? 'Edit Customer' : 'Add New Customer'}
+              </DialogTitle>
               <DialogDescription className="text-oaw-text-light">
-                Add a new customer to your database.
+                {editingCustomerId ? 'Update customer information.' : 'Add a new customer to your database.'}
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <form onSubmit={handleSubmit} className="space-y-4 py-4" autoComplete="off">
+              {submitError && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+                  {submitError}
+                </div>
+              )}
+              
               <div className="space-y-2">
-                <Label htmlFor="customerName" className="text-oaw-text">Full Name</Label>
-                <Input id="customerName" placeholder="Enter customer name" className="border-gray-300 focus:border-oaw-blue" />
+                <Label htmlFor="customerName" className="text-oaw-text">Full Name *</Label>
+                <Input 
+                  id="customerName" 
+                  value={formData.full_name}
+                  onChange={(e) => handleInputChange('full_name', e.target.value)}
+                  placeholder="Enter customer name" 
+                  className="border-gray-300 focus:border-oaw-blue"
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="customerEmail" className="text-oaw-text">Email</Label>
-                <Input id="customerEmail" type="email" placeholder="Enter email address" className="border-gray-300 focus:border-oaw-blue" />
+                <Input 
+                  id="customerEmail" 
+                  type="email" 
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  placeholder="Enter email address" 
+                  className="border-gray-300 focus:border-oaw-blue" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="customerPhone" className="text-oaw-text">Phone</Label>
-                <Input id="customerPhone" placeholder="Enter phone number" className="border-gray-300 focus:border-oaw-blue" />
+                <Input 
+                  id="customerPhone" 
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  placeholder="Enter phone number" 
+                  className="border-gray-300 focus:border-oaw-blue" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="customerCompany" className="text-oaw-text">Company Name (Optional)</Label>
-                <Input id="customerCompany" placeholder="Enter company name" className="border-gray-300 focus:border-oaw-blue" />
+                <Input 
+                  id="customerCompany" 
+                  value={formData.company_name}
+                  onChange={(e) => handleInputChange('company_name', e.target.value)}
+                  placeholder="Enter company name" 
+                  className="border-gray-300 focus:border-oaw-blue" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="customerAddress" className="text-oaw-text">Address</Label>
-                <Input id="customerAddress" placeholder="Enter address" className="border-gray-300 focus:border-oaw-blue" />
+                <Input 
+                  id="customerAddress" 
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  placeholder="Enter address" 
+                  className="border-gray-300 focus:border-oaw-blue" 
+                />
               </div>
-              <Button className="w-full btn-primary bg-oaw-blue hover:bg-oaw-blue-hover">Add Customer</Button>
-            </div>
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full btn-primary bg-oaw-blue hover:bg-oaw-blue-hover"
+              >
+                {isSubmitting 
+                  ? (editingCustomerId ? 'Updating Customer...' : 'Adding Customer...')
+                  : (editingCustomerId ? 'Update Customer' : 'Add Customer')
+                }
+              </Button>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
@@ -252,10 +445,20 @@ export default function CustomersPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-oaw-blue/10 text-oaw-text-light hover:text-oaw-blue">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleEditCustomer(customer)}
+                      className="h-8 w-8 hover:bg-oaw-blue/10 text-oaw-text-light hover:text-oaw-blue"
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleDeleteCustomer(customer.id)}
+                      className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

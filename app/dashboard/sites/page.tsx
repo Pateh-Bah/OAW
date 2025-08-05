@@ -47,9 +47,25 @@ export default function SitesPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
   const [isAddingSite, setIsAddingSite] = useState(false)
+  const [isEditingSite, setIsEditingSite] = useState(false)
+  const [editingSiteId, setEditingSiteId] = useState<string | null>(null)
+  const [customers, setCustomers] = useState<any[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    description: "",
+    budget: "",
+    status: "Planning",
+    start_date: "",
+    end_date: "",
+    customer_id: ""
+  })
 
   useEffect(() => {
     fetchSites()
+    fetchCustomers()
   }, [])
 
   const fetchSites = async () => {
@@ -68,6 +84,162 @@ export default function SitesPage() {
       console.error('Error fetching sites:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCustomers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('id, full_name, company_name')
+        .order('full_name', { ascending: true })
+
+      if (error) throw error
+      setCustomers(data || [])
+    } catch (error) {
+      console.error('Error fetching customers:', error)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      // Validate form data
+      if (!formData.name.trim()) {
+        throw new Error('Please enter a site name')
+      }
+
+      if (!formData.customer_id) {
+        throw new Error('Please select a customer')
+      }
+
+      if (editingSiteId) {
+        // Update existing site
+        const { data, error } = await supabase
+          .from('sites')
+          .update({
+            name: formData.name.trim(),
+            address: formData.address.trim() || null,
+            description: formData.description.trim() || null,
+            budget: formData.budget ? parseFloat(formData.budget) : null,
+            status: formData.status,
+            start_date: formData.start_date || null,
+            end_date: formData.end_date || null,
+            customer_id: formData.customer_id
+          })
+          .eq('id', editingSiteId)
+          .select()
+
+        if (error) throw error
+        console.log('✅ Site updated successfully:', data)
+      } else {
+        // Create new site
+        const { data, error } = await supabase
+          .from('sites')
+          .insert([
+            {
+              name: formData.name.trim(),
+              address: formData.address.trim() || null,
+              description: formData.description.trim() || null,
+              budget: formData.budget ? parseFloat(formData.budget) : null,
+              status: formData.status,
+              start_date: formData.start_date || null,
+              end_date: formData.end_date || null,
+              customer_id: formData.customer_id
+            }
+          ])
+          .select()
+
+        if (error) throw error
+        console.log('✅ Site added successfully:', data)
+      }
+
+      // Reset form and close dialog
+      setFormData({
+        name: "",
+        address: "",
+        description: "",
+        budget: "",
+        status: "Planning",
+        start_date: "",
+        end_date: "",
+        customer_id: ""
+      })
+      setIsAddingSite(false)
+      setIsEditingSite(false)
+      setEditingSiteId(null)
+      
+      // Refresh the sites list
+      await fetchSites()
+    } catch (error: any) {
+      console.error('❌ Error saving site:', error)
+      setSubmitError(error.message || 'Failed to save site')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleEditSite = (site: Site) => {
+    setFormData({
+      name: site.name,
+      address: site.address || "",
+      description: site.description || "",
+      budget: site.budget ? site.budget.toString() : "",
+      status: site.status,
+      start_date: site.start_date || "",
+      end_date: site.end_date || "",
+      customer_id: site.customer_id
+    })
+    setEditingSiteId(site.id)
+    setIsEditingSite(true)
+  }
+
+  const handleCancelEdit = () => {
+    setFormData({
+      name: "",
+      address: "",
+      description: "",
+      budget: "",
+      status: "Planning",
+      start_date: "",
+      end_date: "",
+      customer_id: ""
+    })
+    setEditingSiteId(null)
+    setIsEditingSite(false)
+    setIsAddingSite(false)
+    setSubmitError(null)
+  }
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleDeleteSite = async (siteId: string) => {
+    if (!confirm('Are you sure you want to delete this site?')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('sites')
+        .delete()
+        .eq('id', siteId)
+
+      if (error) throw error
+
+      // Refresh the sites list
+      await fetchSites()
+      console.log('✅ Site deleted successfully')
+    } catch (error) {
+      console.error('❌ Error deleting site:', error)
+      alert('Failed to delete site')
     }
   }
 
@@ -117,7 +289,11 @@ export default function SitesPage() {
           </p>
         </div>
         
-        <Dialog open={isAddingSite} onOpenChange={setIsAddingSite}>
+        <Dialog open={isAddingSite || isEditingSite} onOpenChange={(open) => {
+          if (!open) {
+            handleCancelEdit()
+          }
+        }}>
           <DialogTrigger asChild>
             <Button className="gap-2 btn-primary">
               <Plus className="h-4 w-4" />
@@ -126,31 +302,82 @@ export default function SitesPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Add New Site</DialogTitle>
+              <DialogTitle>
+                {editingSiteId ? 'Edit Site' : 'Add New Site'}
+              </DialogTitle>
               <DialogDescription>
-                Add a new construction site or project location.
+                {editingSiteId ? 'Update site information.' : 'Add a new construction site or project location.'}
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <form onSubmit={handleSubmit} className="space-y-4 py-4" autoComplete="off">
+              {submitError && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+                  {submitError}
+                </div>
+              )}
+              
               <div className="space-y-2">
-                <Label htmlFor="siteName" className="text-oaw-text font-medium">Site Name</Label>
-                <Input id="siteName" placeholder="Enter site name" className="input-enhanced" />
+                <Label htmlFor="siteName" className="text-oaw-text font-medium">Site Name *</Label>
+                <Input 
+                  id="siteName" 
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Enter site name" 
+                  className="input-enhanced"
+                  required
+                />
               </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="customer" className="text-oaw-text font-medium">Customer *</Label>
+                <Select value={formData.customer_id} onValueChange={(value) => handleInputChange('customer_id', value)}>
+                  <SelectTrigger className="input-enhanced">
+                    <SelectValue placeholder="Select customer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {customers.map((customer) => (
+                      <SelectItem key={customer.id} value={customer.id}>
+                        {customer.full_name} {customer.company_name && `(${customer.company_name})`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="siteAddress" className="text-oaw-text font-medium">Address</Label>
-                <Input id="siteAddress" placeholder="Enter site address" className="input-enhanced" />
+                <Input 
+                  id="siteAddress" 
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  placeholder="Enter site address" 
+                  className="input-enhanced" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="siteDescription" className="text-oaw-text font-medium">Description</Label>
-                <Input id="siteDescription" placeholder="Enter site description" className="input-enhanced" />
+                <Input 
+                  id="siteDescription" 
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Enter site description" 
+                  className="input-enhanced" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="siteBudget" className="text-oaw-text font-medium">Budget (SLE)</Label>
-                <Input id="siteBudget" type="number" placeholder="Enter budget amount" className="input-enhanced" />
+                <Input 
+                  id="siteBudget" 
+                  type="number" 
+                  value={formData.budget}
+                  onChange={(e) => handleInputChange('budget', e.target.value)}
+                  placeholder="Enter budget amount" 
+                  className="input-enhanced" 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="siteStatus" className="text-oaw-text font-medium">Status</Label>
-                <Select>
+                <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
                   <SelectTrigger className="input-enhanced">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -164,10 +391,35 @@ export default function SitesPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="startDate" className="text-oaw-text font-medium">Start Date</Label>
-                <Input id="startDate" type="date" className="input-enhanced" />
+                <Input 
+                  id="startDate" 
+                  type="date" 
+                  value={formData.start_date}
+                  onChange={(e) => handleInputChange('start_date', e.target.value)}
+                  className="input-enhanced" 
+                />
               </div>
-              <Button className="w-full btn-primary">Add Site</Button>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="endDate" className="text-oaw-text font-medium">End Date</Label>
+                <Input 
+                  id="endDate" 
+                  type="date" 
+                  value={formData.end_date}
+                  onChange={(e) => handleInputChange('end_date', e.target.value)}
+                  className="input-enhanced" 
+                />
+              </div>
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full btn-primary"
+              >
+                {isSubmitting 
+                  ? (editingSiteId ? 'Updating Site...' : 'Adding Site...')
+                  : (editingSiteId ? 'Update Site' : 'Add Site')
+                }
+              </Button>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
@@ -329,10 +581,20 @@ export default function SitesPage() {
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-oaw-text-light hover:text-oaw-blue hover:bg-oaw-blue/10">
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-oaw-text-light hover:text-oaw-blue hover:bg-oaw-blue/10">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleEditSite(site)}
+                      className="h-8 w-8 text-oaw-text-light hover:text-oaw-blue hover:bg-oaw-blue/10"
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleDeleteSite(site.id)}
+                      className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

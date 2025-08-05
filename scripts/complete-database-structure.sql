@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS company_settings (
     logo_url TEXT,
     primary_color TEXT DEFAULT '#0066CC',
     office_image_url TEXT,
-    contact_info JSONB DEFAULT '{"email": "overheadaluminium@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-31-902-889", "address": "8 Hill Cot Road, Freetown", "website": "https://www.overheadaluminium.com"}',
+    contact_info JSONB DEFAULT '{"email": "overheadaluminiumworkshop@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-31-902-889", "address": "8 Hill Cot Road, Freetown", "website": "https://www.overheadaluminium.com"}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -322,7 +322,7 @@ GRANT ALL ON project_services TO authenticated;
 
 -- Insert sample company settings (using existing schema structure)
 INSERT INTO company_settings (company_name, contact_info) VALUES 
-('Overhead Aluminium Workshop', '{"email": "overheadaluminium@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-31-902-889", "address": "Business District, Freetown, Sierra Leone", "website": "https://www.overheadaluminium.com"}')
+('Overhead Aluminium Workshop', '{"email": "overheadaluminiumworkshop@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-31-902-889", "address": "Business District, Freetown, Sierra Leone", "website": "https://www.overheadaluminium.com"}')
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample services

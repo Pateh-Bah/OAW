@@ -74,7 +74,7 @@ NODE_ENV=development
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
 
 # Company Contact Information
-NEXT_PUBLIC_COMPANY_EMAIL=overheadaluminium@gmail.com
+NEXT_PUBLIC_COMPANY_EMAIL=overheadaluminiumworkshop@gmail.com
 NEXT_PUBLIC_COMPANY_PHONE_1=+232-77-902-889
 NEXT_PUBLIC_COMPANY_PHONE_2=+232-31-902-889
 NEXT_PUBLIC_COMPANY_ADDRESS="8 Hill Cot Road, Freetown"
@@ -140,7 +140,7 @@ git push -u origin main
 | `NEXT_PUBLIC_APP_VERSION` | 1.0.0 |
 | `NODE_ENV` | production |
 | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Your Google Maps API key |
-| `NEXT_PUBLIC_COMPANY_EMAIL` | overheadaluminium@gmail.com |
+| `NEXT_PUBLIC_COMPANY_EMAIL` | overheadaluminiumworkshop@gmail.com |
 | `NEXT_PUBLIC_COMPANY_PHONE_1` | +232-77-902-889 |
 | `NEXT_PUBLIC_COMPANY_PHONE_2` | +232-31-902-889 |
 | `NEXT_PUBLIC_COMPANY_ADDRESS` | 8 Hill Cot Road, Freetown |

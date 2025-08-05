@@ -51,6 +51,8 @@ export default function StaffPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterDepartment, setFilterDepartment] = useState("all")
   const [isAddingEmployee, setIsAddingEmployee] = useState(false)
+  const [isEditingEmployee, setIsEditingEmployee] = useState(false)
+  const [editingEmployeeId, setEditingEmployeeId] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [formData, setFormData] = useState<NewEmployeeForm>({
@@ -94,26 +96,48 @@ export default function StaffPage() {
         throw new Error('Please enter a full name')
       }
 
-      // Generate badge number if not provided
-      const badgeNumber = formData.badge_number.trim() || `EMP${String(employees.length + 1).padStart(3, '0')}`
-
-      const { data, error } = await supabase
-        .from('employees')
-        .insert([
-          {
+      if (editingEmployeeId) {
+        // Update existing employee
+        const { data, error } = await supabase
+          .from('employees')
+          .update({
             full_name: formData.full_name.trim(),
             designation: formData.designation.trim() || null,
             department: formData.department.trim() || null,
-            badge_number: badgeNumber,
+            badge_number: formData.badge_number.trim() || `EMP${String(employees.length + 1).padStart(3, '0')}`,
             contact_info: {
               phone: formData.phone.trim() || null,
               email: formData.email.trim() || null
             }
-          }
-        ])
-        .select()
+          })
+          .eq('id', editingEmployeeId)
+          .select()
 
-      if (error) throw error
+        if (error) throw error
+        console.log('✅ Staff member updated successfully:', data)
+      } else {
+        // Create new employee
+        const badgeNumber = formData.badge_number.trim() || `EMP${String(employees.length + 1).padStart(3, '0')}`
+
+        const { data, error } = await supabase
+          .from('employees')
+          .insert([
+            {
+              full_name: formData.full_name.trim(),
+              designation: formData.designation.trim() || null,
+              department: formData.department.trim() || null,
+              badge_number: badgeNumber,
+              contact_info: {
+                phone: formData.phone.trim() || null,
+                email: formData.email.trim() || null
+              }
+            }
+          ])
+          .select()
+
+        if (error) throw error
+        console.log('✅ Staff member added successfully:', data)
+      }
 
       // Reset form and close dialog
       setFormData({
@@ -125,16 +149,66 @@ export default function StaffPage() {
         email: ""
       })
       setIsAddingEmployee(false)
+      setIsEditingEmployee(false)
+      setEditingEmployeeId(null)
       
       // Refresh the employee list
       await fetchEmployees()
-      
-      console.log('✅ Staff member added successfully:', data)
     } catch (error: any) {
-      console.error('❌ Error adding employee:', error)
-      setSubmitError(error.message || 'Failed to add staff member')
+      console.error('❌ Error saving employee:', error)
+      setSubmitError(error.message || 'Failed to save staff member')
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleEditEmployee = (employee: Employee) => {
+    setFormData({
+      full_name: employee.full_name,
+      designation: employee.designation || "",
+      department: employee.department || "",
+      badge_number: employee.badge_number || "",
+      phone: employee.contact_info?.phone || "",
+      email: employee.contact_info?.email || ""
+    })
+    setEditingEmployeeId(employee.id)
+    setIsEditingEmployee(true)
+  }
+
+  const handleCancelEdit = () => {
+    setFormData({
+      full_name: "",
+      designation: "",
+      department: "",
+      badge_number: "",
+      phone: "",
+      email: ""
+    })
+    setEditingEmployeeId(null)
+    setIsEditingEmployee(false)
+    setIsAddingEmployee(false)
+    setSubmitError(null)
+  }
+
+  const handleDeleteEmployee = async (employeeId: string) => {
+    if (!confirm('Are you sure you want to delete this employee?')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('employees')
+        .delete()
+        .eq('id', employeeId)
+
+      if (error) throw error
+
+      // Refresh the employee list
+      await fetchEmployees()
+      console.log('✅ Employee deleted successfully')
+    } catch (error) {
+      console.error('❌ Error deleting employee:', error)
+      alert('Failed to delete employee')
     }
   }
 
@@ -174,7 +248,11 @@ export default function StaffPage() {
           </p>
         </div>
         
-        <Dialog open={isAddingEmployee} onOpenChange={setIsAddingEmployee}>
+        <Dialog open={isAddingEmployee || isEditingEmployee} onOpenChange={(open) => {
+          if (!open) {
+            handleCancelEdit()
+          }
+        }}>
           <DialogTrigger asChild>
             <Button 
               className="gap-2 btn-primary bg-oaw-blue hover:bg-oaw-blue-hover shadow-md transition-colors duration-200 shrink-0"
@@ -186,9 +264,11 @@ export default function StaffPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-oaw-text">Add New Staff Member</DialogTitle>
+              <DialogTitle className="text-oaw-text">
+                {editingEmployeeId ? 'Edit Staff Member' : 'Add New Staff Member'}
+              </DialogTitle>
               <DialogDescription className="text-oaw-text-light">
-                Add a new employee to your workshop team.
+                {editingEmployeeId ? 'Update employee information.' : 'Add a new employee to your workshop team.'}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 py-4" autoComplete="off">
@@ -435,10 +515,20 @@ export default function StaffPage() {
                       </Badge>
                     )}
                     <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-oaw-blue/10 text-oaw-text-light hover:text-oaw-blue">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => handleEditEmployee(employee)}
+                        className="h-8 w-8 hover:bg-oaw-blue/10 text-oaw-text-light hover:text-oaw-blue"
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => handleDeleteEmployee(employee.id)}
+                        className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

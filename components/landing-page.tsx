@@ -1,53 +1,175 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Navigation } from "@/components/navigation"
-import Link from "next/link"
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button } from "./ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Badge } from "./ui/badge"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog"
+import { Navigation } from "./navigation"
 import { 
-  Building, 
-  Users, 
-  Calculator, 
-  Camera, 
-  Shield, 
-  Zap, 
   Phone, 
   Mail, 
-  MapPin,
+  MapPin, 
+  Star, 
+  Users, 
+  Wrench, 
+  Building, 
+  Award,
+  Calendar,
   ArrowRight,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
   CheckCircle,
-  Star
+  AlertCircle,
+  Pause,
+  Camera,
+  Calculator,
+  Shield,
+  Zap
 } from "lucide-react"
+import { supabase } from '../lib/supabase'
+
+// Types for project data
+interface Project {
+  id: string
+  title: string
+  description: string
+  status: 'pending' | 'in_progress' | 'completed' | 'on_hold'
+  location: string
+  start_date: string
+  end_date?: string
+  project_images: string[]
+  customer_name: string
+  site_address: string
+  created_at: string
+}
+
+const statusConfig = {
+  pending: {
+    label: 'Pending',
+    color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    icon: Clock
+  },
+  in_progress: {
+    label: 'Ongoing',
+    color: 'bg-blue-100 text-blue-800 border-blue-200',
+    icon: CheckCircle
+  },
+  completed: {
+    label: 'Completed',
+    color: 'bg-green-100 text-green-800 border-green-200',
+    icon: CheckCircle
+  },
+  on_hold: {
+    label: 'On Hold',
+    color: 'bg-red-100 text-red-800 border-red-200',
+    icon: Pause
+  }
+}
 
 export function LandingPage() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [loading, setLoading] = useState(true)
+
+  // Fetch projects from database
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select(`
+          id,
+          title,
+          description,
+          status,
+          location,
+          start_date,
+          end_date,
+          project_images,
+          customer_name,
+          site_address,
+          created_at
+        `)
+        .order('created_at', { ascending: false })
+        .limit(6)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const openGallery = (project: Project) => {
+    setSelectedProject(project)
+    setCurrentImageIndex(0)
+  }
+
+  const closeGallery = () => {
+    setSelectedProject(null)
+    setCurrentImageIndex(0)
+  }
+
+  const nextImage = () => {
+    if (selectedProject && selectedProject.project_images.length > 0) {
+      setCurrentImageIndex((prev) => 
+        prev === selectedProject.project_images.length - 1 ? 0 : prev + 1
+      )
+    }
+  }
+
+  const prevImage = () => {
+    if (selectedProject && selectedProject.project_images.length > 0) {
+      setCurrentImageIndex((prev) => 
+        prev === 0 ? selectedProject.project_images.length - 1 : prev - 1
+      )
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/50 dark:via-indigo-950/50 dark:to-purple-950/50">
         <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02]" />
         <div className="container relative mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
           <div className="mx-auto max-w-4xl text-center">
             <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm px-3 py-1">
-              🚀 Professional Workshop Management
+              🏆 Premier Aluminum Specialists in Sierra Leone
             </Badge>
             <h1 className="mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-transparent dark:from-white dark:to-gray-300">
               Overhead Aluminium
               <span className="block text-blue-600 dark:text-blue-400">Workshop</span>
             </h1>
             <p className="mb-6 sm:mb-8 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Transform your aluminium workshop with our comprehensive management platform. 
-              Streamline operations, manage projects, and grow your business.
+              Your trusted partner for premium aluminum fabrication in Sierra Leone. 
+              We craft precision windows, doors, kitchen cabinets, and custom constructions that transform spaces.
             </p>
             <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center">
               <Button asChild size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
-                <Link href="/auth/login">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href="/contact">
+                  Get Free Quote <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
+                <Link href="/services">View Our Services</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
                 Watch Demo
               </Button>
             </div>
@@ -357,7 +479,7 @@ export function LandingPage() {
                     </div>
                     <div>
                       <div className="font-medium">Email</div>
-                      <div className="text-muted-foreground">overheadaluminium@gmail.com</div>
+                      <div className="text-muted-foreground">overheadaluminiumworkshop@gmail.com</div>
                     </div>
                   </div>
 

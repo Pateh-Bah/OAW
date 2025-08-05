@@ -120,7 +120,7 @@ async function createAllTables() {
       company_name: 'Overhead Aluminium Workshop',
       primary_color: '#0066CC',
       contact_info: {
-        email: 'overheadaluminium@gmail.com',
+        email: 'overheadaluminiumworkshop@gmail.com',
         phone1: '+232-77-902-889',
         phone2: '+232-74-902-889',
         phone3: '+232-31-902-889',

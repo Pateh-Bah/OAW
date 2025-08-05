@@ -356,10 +356,10 @@ export function LandingPage() {
                 <CardTitle className="text-oaw-text">Email Us</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-sm text-oaw-text-light">
-                  overheadaluminium@gmail.com
+                <p className="text-sm text-oaw-text-light mb-4">
+                  overheadaluminiumworkshop@gmail.com
                 </p>
-                <Button variant="ghost" size="sm" className="mt-2 text-oaw-blue hover:bg-oaw-blue/10">
+                <Button variant="ghost" size="sm" className="text-oaw-blue hover:bg-oaw-blue/10">
                   Send Email
                 </Button>
               </CardContent>
@@ -416,7 +416,7 @@ export function LandingPage() {
               <h4 className="font-semibold text-white mb-3">Contact</h4>
               <ul className="text-sm space-y-2 text-slate-300">
                 <li className="hover:text-white transition-colors">+232-77-902-889</li>
-                <li className="hover:text-white transition-colors">overheadaluminium@gmail.com</li>
+                <li className="hover:text-white transition-colors">overheadaluminiumworkshop@gmail.com</li>
                 <li className="hover:text-white transition-colors">www.overheadaluminium.com</li>
               </ul>
             </div>

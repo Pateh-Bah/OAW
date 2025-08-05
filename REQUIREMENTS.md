@@ -47,7 +47,7 @@ The system will be built using **Next.js**, **Supabase**, and hosted on **Vercel
     Overhead Aluminium Workshop  
     If found, please return to the nearest office or Police Station  
     8 Hill Cot Road, Freetown.  
-    overheadaluminium@gmail.com  
+    overheadaluminiumworkshop@gmail.com  
     +232-77-902-889 / +232-31-902-889  
     https://www.overheadaluminium.com
     ```

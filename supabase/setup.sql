@@ -53,7 +53,7 @@ CHECK (role IN ('Admin', 'Senior Staff', 'Staff', 'Customer'));
 
 -- STEP 5: Update company settings with correct address
 UPDATE company_settings SET 
-contact_info = '{"email": "overheadaluminium@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-74-74-902-889", "phone3": "+232-31-74-902-889", "address": "5c Hill Cot Road, Freetown, Sierra Leone", "website": "https://www.overheadaluminium.com"}'
+contact_info = '{"email": "overheadaluminiumworkshop@gmail.com", "phone1": "+232-77-902-889", "phone2": "+232-74-74-902-889", "phone3": "+232-31-74-902-889", "address": "5c Hill Cot Road, Freetown, Sierra Leone", "website": "https://www.overheadaluminium.com"}'
 WHERE company_name = 'Overhead Aluminium Workshop';
 
 -- STEP 6: Create additional helper functions for the admin
