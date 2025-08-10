@@ -56,9 +56,6 @@ export default function RootLayout({
         data-gr-ext-installed=""
       >
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
           disableTransitionOnChange
         >
           <AccessibilityProvider />

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { useState } from "react"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -38,6 +39,7 @@ export function Navigation() {
             <Link href="/contact" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors py-2 px-1">
               Contact
             </Link>
+            <ThemeSwitcher compact />
             <Button asChild className="h-9 px-4 lg:px-6 text-sm">
               <Link href="/auth/login">Login</Link>
             </Button>
@@ -84,7 +86,10 @@ export function Navigation() {
             >
               Contact
             </Link>
-            <div className="px-4 pt-2">
+            <div className="px-4 pt-2 flex items-center justify-between gap-3">
+              <div>
+                <ThemeSwitcher />
+              </div>
               <Button asChild className="w-full h-12 text-base font-medium">
                 <Link href="/auth/login" onClick={() => setIsOpen(false)}>Login</Link>
               </Button>

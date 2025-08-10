@@ -22,6 +22,7 @@ import {
   X
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: Home },
@@ -115,6 +116,9 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
+              <div className="hidden md:block">
+                <ThemeSwitcher />
+              </div>
               {/* Mobile search button */}
               <Button variant="ghost" size="icon" className="md:hidden text-oaw-text hover:bg-oaw-blue-light h-9 w-9">
                 <Search className="h-4 w-4" />
@@ -128,6 +132,10 @@ export default function DashboardLayout({
               </Button>
               
               <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block" />
+              {/* Compact theme button on small screens */}
+              <div className="md:hidden">
+                <ThemeSwitcher compact />
+              </div>
               
               <Button 
                 variant="ghost" 
