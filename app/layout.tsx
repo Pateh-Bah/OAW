@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AccessibilityProvider } from '@/components/accessibility-provider'
 import { Toaster } from '@/components/ui/toaster'
+import BackgroundPattern from '@/components/background-pattern'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -58,6 +59,7 @@ export default function RootLayout({
         <ThemeProvider
           disableTransitionOnChange
         >
+          <BackgroundPattern />
           <AccessibilityProvider />
           {children}
           <Toaster />
