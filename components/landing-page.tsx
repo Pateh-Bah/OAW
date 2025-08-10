@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from "./ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Badge } from "./ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog"
-import { Navigation } from "./navigation"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Navigation } from "@/components/navigation"
 import { 
   Phone, 
   Mail, 
@@ -25,13 +25,9 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-  Pause,
-  Camera,
-  Calculator,
-  Shield,
-  Zap
+  Pause
 } from "lucide-react"
-import { supabase } from '../lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 // Types for project data
 interface Project {
@@ -157,402 +153,397 @@ export function LandingPage() {
               Your trusted partner for premium aluminum fabrication in Sierra Leone. 
               We craft precision windows, doors, kitchen cabinets, and custom constructions that transform spaces.
             </p>
-            <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
-                <Link href="/contact">
-                  Get Free Quote <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium">
-                <Link href="/services">View Our Services</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-                Watch Demo
-              </Button>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 sm:py-20 lg:py-24 xl:py-32">
+      {/* Company Stats */}
+      <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16">
-            <h2 className="mb-3 sm:mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
-              Everything you need to manage your workshop
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed specifically for aluminium workshops and fabrication businesses
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg transition-all hover:shadow-xl dark:from-blue-950/50 dark:to-indigo-950/50">
-              <CardHeader className="pb-4">
-                <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-blue-600 text-white mb-3 sm:mb-4">
-                  <Users className="h-5 w-5 sm:h-6 sm:w-6" />
-                </div>
-                <CardTitle className="text-lg sm:text-xl">Staff Management</CardTitle>
-                <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Complete team management with role-based access control and activity tracking
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                    <span>Employee profiles and roles</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                    <span>Activity logging and reporting</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                    <span>Permission management</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-green-50 to-emerald-50 shadow-lg transition-all hover:shadow-xl dark:from-green-950/50 dark:to-emerald-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-600 text-white">
-                  <Building className="h-6 w-6" />
-                </div>
-                <CardTitle className="text-xl">Project Management</CardTitle>
-                <CardDescription className="text-base">
-                  Track customers, projects, and site locations with detailed records
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Customer database
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Project timeline tracking
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Site location management
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-purple-50 to-pink-50 shadow-lg transition-all hover:shadow-xl dark:from-purple-950/50 dark:to-pink-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-600 text-white">
-                  <Calculator className="h-6 w-6" />
-                </div>
-                <CardTitle className="text-xl">Budget & Quotes</CardTitle>
-                <CardDescription className="text-base">
-                  Handle budgets, generate professional quotes, and manage finances
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Automated calculations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    PDF quote generation
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Financial tracking
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-orange-50 to-red-50 shadow-lg transition-all hover:shadow-xl dark:from-orange-950/50 dark:to-red-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-600 text-white">
-                  <Camera className="h-6 w-6" />
-                </div>
-                <CardTitle className="text-xl">Media Management</CardTitle>
-                <CardDescription className="text-base">
-                  Store and organize project photos, documents, and media files
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Photo galleries
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Document storage
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Progress tracking
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-teal-50 to-cyan-50 shadow-lg transition-all hover:shadow-xl dark:from-teal-950/50 dark:to-cyan-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-600 text-white">
-                  <Shield className="h-6 w-6" />
-                </div>
-                <CardTitle className="text-xl">Security & Access</CardTitle>
-                <CardDescription className="text-base">
-                  Enterprise-grade security with role-based permissions
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Secure authentication
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    User permissions
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Audit trails
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-yellow-50 to-amber-50 shadow-lg transition-all hover:shadow-xl dark:from-yellow-950/50 dark:to-amber-950/50">
-              <CardHeader>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-600 text-white">
-                  <Zap className="h-6 w-6" />
-                </div>
-                <CardTitle className="text-xl">Real-time Updates</CardTitle>
-                <CardDescription className="text-base">
-                  Stay connected with instant notifications and real-time data
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Live notifications
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Real-time sync
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    Instant updates
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16 text-white">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold">500+</div>
-              <div className="text-blue-100">Projects Completed</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
+            <div className="space-y-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">4+</div>
+              <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Years Experience</div>
             </div>
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold">50+</div>
-              <div className="text-blue-100">Happy Customers</div>
+            <div className="space-y-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">200+</div>
+              <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Projects Completed</div>
             </div>
-            <div className="text-center">
-              <div className="mb-2 text-4xl font-bold">99.9%</div>
-              <div className="text-blue-100">Uptime Guarantee</div>
+            <div className="space-y-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">150+</div>
+              <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Happy Clients</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">99%</div>
+              <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Satisfaction Rate</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Trusted by professionals
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              See what our customers say about our workshop management system
-            </p>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <CardDescription>
-                  "This system has completely transformed how we manage our aluminium projects. 
-                  The efficiency gains are incredible!"
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm font-medium">Sarah Johnson</div>
-                <div className="text-sm text-muted-foreground">AlumTech Solutions</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <CardDescription>
-                  "The project tracking and budget management features have saved us countless hours. 
-                  Highly recommended!"
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm font-medium">Michael Chen</div>
-                <div className="text-sm text-muted-foreground">Pro Aluminium Works</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <CardDescription>
-                  "Outstanding customer support and a platform that actually understands 
-                  the needs of workshop businesses."
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm font-medium">David Williams</div>
-                <div className="text-sm text-muted-foreground">Elite Fabrication</div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="bg-gray-50 py-24 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-16 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-                Get in touch
+      {/* About Section */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-900/50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                Crafting Excellence in Aluminum Solutions Since 2020
               </h2>
-              <p className="text-lg text-muted-foreground">
-                Ready to transform your workshop? Contact us today for a personalized demo
+              <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                Overhead Aluminium Workshop has grown to become Sierra Leone's most trusted partner for premium aluminum fabrication. 
+                We combine traditional craftsmanship with modern techniques to deliver exceptional results that stand the test of time.
               </p>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Award className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">Certified aluminum fabrication specialists</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">Experienced team of skilled craftsmen</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Building className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">State-of-the-art fabrication facility</span>
+                </div>
+              </div>
+              <Link href="/about" className="inline-block mt-8">
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  Learn More About Us
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 rounded-2xl p-8 flex items-center justify-center">
+                <Building className="h-24 w-24 sm:h-32 sm:w-32 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="grid gap-8 md:grid-cols-2">
-              <Card className="border-0 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Contact Information</CardTitle>
-                  <CardDescription>
-                    Reach out to us through any of these channels
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400">
-                      <Mail className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Email</div>
-                      <div className="text-muted-foreground">overheadaluminiumworkshop@gmail.com</div>
-                    </div>
+      {/* Services Overview */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Our Specialized Services
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              From residential to commercial projects, we offer comprehensive aluminum solutions 
+              tailored to your specific needs and requirements.
+            </p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {[
+              {
+                icon: <Building className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Aluminum Windows & Doors",
+                description: "Premium quality windows and doors designed for durability, security, and style"
+              },
+              {
+                icon: <Wrench className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Kitchen Cabinets",
+                description: "Custom aluminum kitchen cabinets that combine functionality with modern elegance"
+              },
+              {
+                icon: <Users className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Imported Aluminum Chairs",
+                description: "High-quality imported chairs perfect for offices and commercial spaces"
+              },
+              {
+                icon: <Building className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Wall Frames",
+                description: "Structural aluminum wall framing solutions for modern construction projects"
+              },
+              {
+                icon: <Wrench className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Assembly Services",
+                description: "Professional installation and assembly of all aluminum products and systems"
+              },
+              {
+                icon: <Award className="h-6 w-6 sm:h-8 sm:w-8" />,
+                title: "Custom Constructions",
+                description: "Bespoke aluminum solutions designed and crafted to your exact specifications"
+              }
+            ].map((service, index) => (
+              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-3 sm:mb-4">
+                    {service.icon}
                   </div>
+                  <CardTitle className="text-lg sm:text-xl">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <CardDescription className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {service.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400">
-                      <Phone className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Phone</div>
-                      <div className="text-muted-foreground">
-                        +232-77-902-889<br />+232-74-902-889<br />+232-31-902-889
+      {/* Recent Projects Gallery */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-900/50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Our Recent Projects
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              Explore our portfolio of completed and ongoing projects showcasing our 
+              expertise in aluminum fabrication and installation across Sierra Leone.
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm animate-pulse">
+                  <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
+                  <div className="p-6 space-y-3">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((project) => {
+                const StatusIcon = statusConfig[project.status].icon
+                return (
+                  <Card 
+                    key={project.id} 
+                    className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden border-0 bg-white dark:bg-gray-800"
+                    onClick={() => openGallery(project)}
+                  >
+                    <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 overflow-hidden">
+                      {project.project_images && project.project_images.length > 0 ? (
+                        <Image
+                          src={project.project_images[0]}
+                          alt={project.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <Building className="h-12 w-12 sm:h-16 sm:w-16 text-blue-400 dark:text-blue-300" />
+                        </div>
+                      )}
+                      <div className="absolute top-3 right-3">
+                        <Badge className={`${statusConfig[project.status].color} border text-xs`}>
+                          <StatusIcon className="h-3 w-3 mr-1" />
+                          {statusConfig[project.status].label}
+                        </Badge>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400">
-                      <MapPin className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Address</div>
-                      <div className="text-muted-foreground">5c Hill Cot Road, Freetown</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Ready to get started?</CardTitle>
-                  <CardDescription>
-                    Join hundreds of workshops already using our platform
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span className="text-sm">30-day free trial</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span className="text-sm">No setup fees</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span className="text-sm">24/7 customer support</span>
-                    </div>
-                  </div>
-                  
-                  <Button asChild size="lg" className="w-full">
-                    <Link href="/auth/login">
-                      Start Your Free Trial
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg line-clamp-1">{project.title}</CardTitle>
+                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                        <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                        <span className="truncate">{project.site_address || project.location}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-3 leading-relaxed">
+                        {project.description}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          {new Date(project.start_date).toLocaleDateString()}
+                        </div>
+                        <div className="text-blue-600 dark:text-blue-400 font-medium">
+                          {project.project_images?.length || 0} photos
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
-          </div>
+          )}
+
+          {!loading && projects.length === 0 && (
+            <div className="text-center py-12">
+              <Building className="h-12 w-12 sm:h-16 sm:w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400 text-base sm:text-lg">No projects to display at the moment.</p>
+              <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">Check back soon for updates on our latest work!</p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-background py-12">
+      <footer className="bg-slate-900 text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="text-2xl font-bold text-blue-600">OAW</div>
-            <div className="text-sm text-muted-foreground">
-              © 2025 Overhead Aluminium Workshop. All rights reserved.
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4 text-blue-400">OAW</h3>
+              <p className="text-gray-400 text-sm">
+                Premium aluminum construction and fabrication in Freetown, Sierra Leone.
+              </p>
             </div>
+            <div>
+              <h4 className="font-semibold text-white mb-3">Services</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="/services" className="hover:text-white transition-colors">Windows & Doors</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Kitchen Cabinets</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Custom Construction</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-3">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link href="/services" className="hover:text-white transition-colors">Services</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-white mb-3">Contact</h4>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p>5c Hill Cot Road</p>
+                <p>Freetown, Sierra Leone</p>
+                <p>+232-77-902-889</p>
+                <p>overheadaluminiumworkshop@gmail.com</p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 mt-8 text-center">
+            <p className="text-sm text-gray-400">
+              © 2024 Overhead Aluminium Workshop. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
+
+      {/* Project Gallery Modal */}
+      <Dialog open={!!selectedProject} onOpenChange={closeGallery}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
+          {selectedProject && (
+            <>
+              <DialogHeader className="p-4 sm:p-6 pb-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 min-w-0 pr-4">
+                    <DialogTitle className="text-xl sm:text-2xl truncate">{selectedProject.title}</DialogTitle>
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 mt-2 text-sm">
+                      <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                      <span className="truncate">{selectedProject.site_address || selectedProject.location}</span>
+                      <Badge className={`ml-3 ${statusConfig[selectedProject.status].color} border text-xs flex-shrink-0`}>
+                        {statusConfig[selectedProject.status].label}
+                      </Badge>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={closeGallery}
+                    className="h-8 w-8 p-0 flex-shrink-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </DialogHeader>
+              
+              <div className="relative">
+                {selectedProject.project_images && selectedProject.project_images.length > 0 ? (
+                  <>
+                    <div className="relative h-64 sm:h-96 bg-gray-100 dark:bg-gray-800">
+                      <Image
+                        src={selectedProject.project_images[currentImageIndex]}
+                        alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
+                        fill
+                        className="object-contain"
+                      />
+                      
+                      {selectedProject.project_images.length > 1 && (
+                        <>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-full"
+                            onClick={prevImage}
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-full"
+                            onClick={nextImage}
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                    
+                    {selectedProject.project_images.length > 1 && (
+                      <div className="flex justify-center space-x-2 p-4 bg-gray-50 dark:bg-gray-800">
+                        {selectedProject.project_images.map((_, index) => (
+                          <button
+                            key={index}
+                            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
+                              index === currentImageIndex ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                            }`}
+                            onClick={() => setCurrentImageIndex(index)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="h-64 sm:h-96 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <div className="text-center text-gray-500 dark:text-gray-400">
+                      <Building className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 text-gray-400 dark:text-gray-500" />
+                      <p className="text-sm sm:text-base">No images available for this project</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="p-4 sm:p-6 pt-0">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 text-sm">
+                  <div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Client:</span>
+                    <p className="text-gray-600 dark:text-gray-400">{selectedProject.customer_name}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Start Date:</span>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {new Date(selectedProject.start_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  {selectedProject.end_date && (
+                    <div>
+                      <span className="font-medium text-gray-700 dark:text-gray-300">End Date:</span>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {new Date(selectedProject.end_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                  <div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Status:</span>
+                    <p className="text-gray-600 dark:text-gray-400">{statusConfig[selectedProject.status].label}</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Description:</span>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base leading-relaxed">{selectedProject.description}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
