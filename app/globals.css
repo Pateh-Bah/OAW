@@ -297,6 +297,17 @@
   animation: fadeIn 0.2s ease-out;
 }
 
+/* Subtle float animation for background tools */
+@keyframes float-slow {
+  0% { transform: translateY(0px); opacity: 0.7; }
+  50% { transform: translateY(-6px); opacity: 0.9; }
+  100% { transform: translateY(0px); opacity: 0.7; }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
 /* Improved button hover effects */
 .btn-hover-lift {
   transition: all 0.2s ease;
@@ -323,6 +334,19 @@
 .gradient-primary {
   background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
 }
+
+/* New gradients for blue & sky themed sections */
+.gradient-blue-soft {
+  background: linear-gradient(135deg, hsl(var(--oaw-blue) / 0.08) 0%, hsl(var(--accent) / 0.06) 100%);
+}
+.gradient-sky-bright {
+  background: radial-gradient(60% 60% at 20% 20%, hsl(var(--accent) / 0.12) 0%, transparent 60%),
+              radial-gradient(50% 50% at 80% 30%, hsl(var(--oaw-blue) / 0.10) 0%, transparent 60%),
+              linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--oaw-blue-light)) 100%);
+}
+
+/* Decorative layer helper */
+.hero-decor:after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.03)); pointer-events: none; }
 
 /* Enhanced OAW Brand Colors with Superior Visibility */
 

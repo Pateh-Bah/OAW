@@ -22,6 +22,7 @@ import {
   X
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { BackgroundTools } from "@/components/background-tools"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const navigation = [
@@ -81,8 +82,9 @@ export default function DashboardLayout({
         )}
 
         {/* Top Navigation */}
-        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60 shadow-sm">
-          <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
+        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60 shadow-sm relative">
+          <BackgroundTools className="opacity-40" density={16} />
+          <div className="relative flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
             <div className="flex items-center gap-3 sm:gap-6">
               {/* Mobile menu button */}
               <Button

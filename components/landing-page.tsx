@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Navigation } from "@/components/navigation"
+import { BackgroundTools } from "@/components/background-tools"
 import { 
   Phone, 
   Mail, 
@@ -138,14 +139,15 @@ export function LandingPage() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/50 dark:via-indigo-950/50 dark:to-purple-950/50">
+      <section className="relative overflow-hidden gradient-sky-bright dark:gradient-blue-soft">
         <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02]" />
+        <BackgroundTools className="opacity-70" />
         <div className="container relative mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
           <div className="mx-auto max-w-4xl text-center">
-            <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm px-3 py-1">
+            <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm px-3 py-1 animate-fade-in">
               🏆 Premier Aluminum Specialists in Sierra Leone
             </Badge>
-            <h1 className="mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-transparent dark:from-white dark:to-gray-300">
+            <h1 className="mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 via-blue-700 to-gray-600 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-transparent dark:from-white dark:via-blue-300 dark:to-gray-300 animate-slide-in">
               Overhead Aluminium
               <span className="block text-blue-600 dark:text-blue-400">Workshop</span>
             </h1>
@@ -153,6 +155,19 @@ export function LandingPage() {
               Your trusted partner for premium aluminum fabrication in Sierra Leone. 
               We craft precision windows, doors, kitchen cabinets, and custom constructions that transform spaces.
             </p>
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/about" className="inline-block">
+                <Button className="bg-oaw-blue hover:bg-oaw-blue-hover shadow-md btn-hover-lift">
+                  Learn More About Us
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/contact" className="inline-block">
+                <Button variant="outline" className="border-oaw-blue text-oaw-blue hover:bg-oaw-blue-light">
+                  Contact Us
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -269,7 +284,7 @@ export function LandingPage() {
                 description: "Bespoke aluminum solutions designed and crafted to your exact specifications"
               }
             ].map((service, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 animate-fade-in">
                 <CardHeader className="pb-4">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-3 sm:mb-4">
                     {service.icon}
