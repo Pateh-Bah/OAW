@@ -4,7 +4,7 @@ import React from "react"
 // Icons are minimal outlines to suggest aluminium tools/products
 export default function BackgroundPattern() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.06] dark:opacity-[0.08]">
+  <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.06] dark:opacity-[0.08]">
       <svg className="h-full w-full" aria-hidden>
         <defs>
           <pattern id="oawPattern" width="160" height="160" patternUnits="userSpaceOnUse">

@@ -23,7 +23,7 @@ export function BackgroundTools({
     <div
       aria-hidden
       className={
-        "pointer-events-none absolute inset-0 overflow-hidden hero-decor " + className
+        "pointer-events-none absolute inset-0 overflow-hidden hero-decor z-10 " + className
       }
     >
       {/* gradient wash that adapts to theme */}

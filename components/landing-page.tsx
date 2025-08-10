@@ -135,7 +135,7 @@ export function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-background/95">
       <Navigation />
       
       {/* Hero Section */}
@@ -173,7 +173,7 @@ export function LandingPage() {
       </section>
 
       {/* Company Stats */}
-      <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
+  <section className="py-12 sm:py-16 bg-card/90">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
             <div className="space-y-2">
@@ -197,7 +197,7 @@ export function LandingPage() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-900/50">
+  <section className="py-16 sm:py-20 lg:py-24 bg-muted/60">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -239,7 +239,7 @@ export function LandingPage() {
       </section>
 
       {/* Services Overview */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
+  <section className="py-16 sm:py-20 lg:py-24 bg-card/90">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -303,7 +303,7 @@ export function LandingPage() {
       </section>
 
       {/* Recent Projects Gallery */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-900/50">
+  <section className="py-16 sm:py-20 lg:py-24 bg-muted/60">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">

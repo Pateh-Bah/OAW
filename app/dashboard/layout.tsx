@@ -72,7 +72,7 @@ export default function DashboardLayout({
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div className="min-h-screen bg-background/95">
         {/* Mobile sidebar backdrop */}
         {sidebarOpen && (
           <div 
@@ -82,7 +82,7 @@ export default function DashboardLayout({
         )}
 
         {/* Top Navigation */}
-        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60 shadow-sm relative">
+  <header className="sticky top-0 z-50 w-full border-b bg-card/90 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-sm relative">
           <BackgroundTools className="opacity-40" density={16} />
           <div className="relative flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
             <div className="flex items-center gap-3 sm:gap-6">
@@ -153,7 +153,7 @@ export default function DashboardLayout({
 
         <div className="flex">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:top-14 sm:lg:top-16 lg:z-30 lg:w-64 lg:bg-white lg:dark:bg-gray-900 lg:shadow-sm lg:flex">
+          <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:top-14 sm:lg:top-16 lg:z-30 lg:w-64 lg:bg-card/90 lg:shadow-sm lg:flex">
             <div className="flex h-full w-full flex-col">
               <nav className="flex-1 space-y-1 p-4">
                 {navigation.map((item) => {
@@ -198,7 +198,7 @@ export default function DashboardLayout({
           {/* Mobile Sidebar */}
           <aside 
             id="mobile-sidebar"
-            className={`fixed inset-y-0 left-0 top-14 sm:top-16 z-50 w-64 bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden ${
+            className={`fixed inset-y-0 left-0 top-14 sm:top-16 z-50 w-64 bg-card/95 shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden ${
               sidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}
           >
